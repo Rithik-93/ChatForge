@@ -7,6 +7,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import dotenv from "dotenv";
 import prisma from "./prisma/src";
 import { embeddings, openai } from "./openai";
+import { login, register } from "./controllers/auth.controller";
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+app.post("/api/signup", register);
+app.post("/api/login", login);
 
 app.post("/api/upload-sources", upload.single("file"), async (req, res) => {
   try {
