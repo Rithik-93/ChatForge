@@ -6,7 +6,7 @@ const Dashboard = () => {
     <div className='max-w-full flex  items-center justify-center'>
       
       <div className="w-full max-w-4xl">
-        <PageTitle title="AI Agents" buttonHide={false}/>
+        <PageTitle title="AI Agents" buttonHide={false} children={"New Agent"} variant='default'/>
 
         <div className="flex flex-wrap gap-4 p-4">
           <ChatbotLists />

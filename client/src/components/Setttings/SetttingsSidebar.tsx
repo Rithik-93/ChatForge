@@ -1,41 +1,25 @@
 import { Link } from 'react-router-dom';
 
+const img = (src: string, alt = '') => (
+  <img src={src} alt={alt} className="h-5 w-5 shrink-0 text-zinc-400 group-hover:text-violet-600" />
+);
+
 const navItems = [
   {
     label: 'General',
     href: './general',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-           strokeWidth="1.5" stroke="currentColor"
-           className="h-5 w-5 shrink-0 text-violet-600">
-        <path strokeLinecap="round" strokeLinejoin="round"
-              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87..."/>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
     active: true,
+    icon: img('/setting.png', 'General'),
   },
   {
     label: 'Members',
     href: './members',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-           viewBox="0 0 24 24" strokeWidth="1.5"
-           stroke="currentColor" className="h-5 w-5 shrink-0 text-zinc-400 group-hover:text-violet-600">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38..."/>
-      </svg>
-    ),
+    icon: img('/group-chat.png', 'Members'),
   },
   {
     label: 'Plans',
     href: './plans',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-           viewBox="0 0 24 24" strokeWidth="1.5"
-           stroke="currentColor" className="h-5 w-5 shrink-0 text-zinc-400 group-hover:text-violet-600">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25..."/>
-      </svg>
-    ),
+    icon: img('/planning.png', 'Plans'),
   },
   {
     label: 'Billing',

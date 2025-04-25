@@ -2,11 +2,11 @@ import Navbar from './Navbar'
 import MainNavbar from './MainNavbar'
 import { Outlet } from 'react-router-dom'
 
-const DashboardLayout = () => {
+const DashboardLayout = ({ navLinks }: { navLinks: { label: string; path: string }[] }) => {
     return (
         <>
             <Navbar />
-            <MainNavbar />
+            <MainNavbar items={navLinks} />
             <Outlet />
         </>
     )
