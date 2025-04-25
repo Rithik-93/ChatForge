@@ -1,10 +1,18 @@
-import './App.css'
-import PdfUploader from './pdf-upload'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import DashboardLayout from './components/DashboardLayout'
+import Settings from './pages/Settings'
 
 function App() {
-
   return (
-    <PdfUploader/>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/dashboard" element={<DashboardLayout/>}>
+        <Route path='bots' element={<Dashboard/>}/>
+        <Route path='settings' element={<Settings/>}/>
+      </Route>
+    </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -1,19 +1,18 @@
-/*
-  Warnings:
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "vector";
 
-  - You are about to drop the `PdfDoc` table. If the table is not empty, all the data it contains will be lost.
-  - Made the column `name` on table `User` required. This step will fail if there are existing NULL values in that column.
-  - Made the column `email` on table `User` required. This step will fail if there are existing NULL values in that column.
-  - Made the column `password` on table `User` required. This step will fail if there are existing NULL values in that column.
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "refreshToken" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-*/
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "name" SET NOT NULL,
-ALTER COLUMN "email" SET NOT NULL,
-ALTER COLUMN "password" SET NOT NULL;
-
--- DropTable
-DROP TABLE "PdfDoc";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Project" (
@@ -38,6 +37,9 @@ CREATE TABLE "Page" (
 
     CONSTRAINT "Page_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
