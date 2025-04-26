@@ -19,7 +19,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ items }) => {
           href={href}
           className='text-zinc-500 hover:text-zinc-700 relative col-span-1 items-center p-1 font-medium text-sm'
         >
-          {label}
+          <h1 style={{ fontFamily: 'Neue Montreal, sans-serif' }}>{label}</h1>
           {isActive && (
             <div className="bg-violet-500 -left-0 absolute top-[1.89rem] h-[0.15rem] w-full rounded-3xl transition-all ease-in-out"></div>
           )}

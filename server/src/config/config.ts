@@ -7,3 +7,5 @@ export const JWT_SECRET_REFRESH_TOKEN = process.env.JWT_SECRET_REFRESH_TOKEN || 
 export const DOMAIN = process.env.DOMAIN || "http://localhost:3000";
 export const REDIS_URI = process.env.REDIS_URI || "redis://localhost:6379";
 export const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+export const clientID = process.env.clientID || '';
+export const clientSecret = process.env.clientSecret || '';

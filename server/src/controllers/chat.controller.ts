@@ -53,14 +53,14 @@ router.post(
       let project;
 
       project = await prisma.project.findFirst({
-        where: { userId: req.userId },
+        where: { userId: req.user!.id },
       });
 
       if (!project) {
         project = await prisma.project.create({
           data: {
             name,
-            userId: req.userId!,
+            userId: req.user!.id,
           },
         });
       }
@@ -100,7 +100,7 @@ router.post("/api/query-sources", async (req: Request, res: Response) => {
   const projectId = req.body.projectId;
 
   const project = await prisma.project.findUnique({
-    where: { id: projectId, userId: req.userId },
+    where: { id: projectId, userId: req.user!.id },
     include: {
       pages: true,
     },
@@ -168,6 +168,70 @@ Return a concise, accurate answer as if you were the front-end of a chat-based k
     results,
     answer: response.choices[0].message.content,
   });
+});
+
+router.post("/api/create", upload.single("files"), async (req: Request, res: Response) => {
+  try {
+    const file = req.file;
+    const metadataString = req.body.metadata;
+
+    if (!metadataString) {
+      return res.status(400).json({ error: "File metadata is required" });
+    }
+
+    if (!file) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ error: "Missing OpenAI API key" });
+    }
+    
+    const loader = new PDFLoader(path.join(uploadDir, file.filename));
+    const docs = await loader.load();
+
+    const project = await prisma.project.create({
+      data: {
+        name: file.originalname,
+        userId: req.user!.id,
+      },
+    });
+
+    for (const doc of docs) {
+      const embedding = await embeddings.embedQuery(doc.pageContent);
+      console.log("Embedding:", docs[0].metadata);
+      const page = await prisma.page.create({
+        data: {
+          content: doc.pageContent,
+          metadata: JSON.stringify(doc.metadata),
+          projectId: project.id,
+        },
+      });
+
+      await prisma.$executeRaw`
+      UPDATE "Page"
+        SET "vector" = ${embedding}::vector
+        WHERE "id" = ${page.id}
+      `;
+    }
+
+    interface FileMetadata {
+      active: boolean;
+      [key: string]: any;
+    }
+
+    const filesMetadata: FileMetadata[] = JSON.parse(metadataString);
+
+    res.status(201).json({
+      project,
+      message: "Project created and files processed successfully.",
+      filesProcessed: filesMetadata.filter((m: FileMetadata) => m.active).length,
+    });
+
+  } catch (error) {
+    console.error("Error creating project:", error);
+    res.status(500).json({ error: "Failed to create project" });
+  }
 });
 
 export default router;

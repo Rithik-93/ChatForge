@@ -15,7 +15,7 @@ const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET_ACCESS_TOKEN) as { userId: string };
-    req.userId = decoded.userId;
+    req.user!.id = decoded.userId;
     next();
   } catch {
     res.status(401).json({ message: "Invalid token" });
