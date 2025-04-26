@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard'
 import DashboardLayout from './components/DashboardLayout'
 import Settings from './pages/Settings'
 import Playground from './components/Playground';
+import Home from './pages/Home';
 
 function App() {
   const navLinks = [
@@ -23,6 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<Home/>} />
         <Route path="/dashboard" element={<DashboardLayout navLinks={navLinks} />}>
           <Route path='bots' element={<Dashboard />} />
           <Route path='settings' element={<Settings />} />
