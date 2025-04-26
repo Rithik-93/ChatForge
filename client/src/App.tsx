@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import DashboardLayout from './components/DashboardLayout'
+<<<<<<< HEAD
 import Settings from './pages/DashboardSettings'
 import Playground from './components/Playground/Playground';
 import Home from './pages/Home';
@@ -46,11 +47,29 @@ function AppRoutes() {
     </Routes>
   );
 }
+=======
+import Settings from './pages/Settings'
+import Playground from './components/Playground';
+import Home from './pages/Home';
+>>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
 
 function App() {
   return (
     <BrowserRouter>
+<<<<<<< HEAD
       <AppRoutes />
+=======
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path="/dashboard" element={<DashboardLayout navLinks={navLinks} />}>
+          <Route path='bots' element={<Dashboard />} />
+          <Route path='settings' element={<Settings />} />
+        </Route>
+        <Route path='/dashboard/bot' element={<DashboardLayout navLinks={navItemss}/>}>
+          <Route path='a' element={<Playground/>}/>
+        </Route>
+      </Routes>
+>>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
     </BrowserRouter>
   )
 }
