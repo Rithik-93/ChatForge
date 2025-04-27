@@ -11,7 +11,7 @@ import { PrismaSessionStore } from "./services/session";
 const app = express();
 app.use(
   cors({
-    origin: ["*"],
+    origin: ["http://localhost:5173"],
     credentials: true,
   })
 );
@@ -40,7 +40,7 @@ app.use(passport.session())
 app.post("/api/signup", register);
 app.post("/api/login", login);
 
-app.use("/api/core", router);
+app.use("/api/core", isLoggedIn, router);
 
 app.get(
   "/api/auth/google",
@@ -55,19 +55,31 @@ app.get(
   }),
 );
 
-app.get('/logout', (req, res) => {
-    req.logout((error) => {
-        if (error) {
-            return res.status(500).json({ error: 'Something went wrong' })
-        }
+app.post("/logout", (req: Request, res: Response) => {
+  req.logout(() => {
+    res.clearCookie("user");
+    res.clearCookie("connect.sid");
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  });
+});
 
-        res.status(204).send()
-    })
-})
+app.get("/api/check-auth", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({ authenticated: true, user: req.user });
+    return
+  } else {
+    res.status(401).json({ authenticated: false });
+    return
+  }
+});
 
-export function isLoggedIn(req: Request, res: Response, next: NextFunction) {
+export function isLoggedIn(req: Request, res: Response, next: NextFunction): void {
   if (!req.isAuthenticated()) {
-    return res.status(401).send("Unauthorized");
+    res.status(401).send("Unauthorized");
+    return;
   }
   next();
 }

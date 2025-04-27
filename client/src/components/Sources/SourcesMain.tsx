@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Sidebar from '../Setttings/SetttingsSidebar'
 import FileUpload from './FileUpload'
 import SourcesCard from './trainCard'
+import { useAuthStore } from '@/store/useAuthstore'
 
 // Type definition for file
 type FileType = {
@@ -18,6 +19,7 @@ const SourcesMain = () => {
     const [files, setFiles] = useState<FileType[]>([]);
     const [totalSize, setTotalSize] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
+    const updateUser = useAuthStore((state) => state.updateUser);
     
     const navItems = [{
         label: 'Files',
@@ -27,12 +29,12 @@ const SourcesMain = () => {
         ),
     }];
 
-    const handleFilesChange = (newFiles: FileType[]) => {
+    const handleFilesChange = useCallback((newFiles: FileType[]) => {
         setFiles(newFiles);
         // Calculate total size
         const size = newFiles.reduce((acc, file) => acc + file.size, 0);
         setTotalSize(size);
-    };
+    }, []);
 
     const handleRetrainClick = async () => {
         if (files.length === 0) return;
@@ -48,35 +50,35 @@ const SourcesMain = () => {
                 }
             });
             
-            formData.append('metadata', JSON.stringify(
-                files.map(f => ({
-                    id: f.id,
-                    name: f.name,
-                    size: f.size,
-                    type: f.type,
-                    active: f.active
-                }))
-            ));
-            console.error( JSON.stringify(
-                files.map(f => ({
-                    id: f.id,
-                    name: f.name,
-                    size: f.size,
-                    type: f.type,
-                    active: f.active
-                }))))
+            const metadata = files.map(f => ({
+                id: f.id,
+                name: f.name,
+                size: f.size,
+                type: f.type,
+                active: f.active
+            }));
             
+            formData.append('metadata', JSON.stringify(metadata));
             
             const uploadResponse = await fetch('http://localhost:3000/api/core/api/create', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                credentials: 'include',
             });
+            
+
+            if (uploadResponse.status === 401) {
+                updateUser(null);
+                window.location.href = '/login';
+                return;
+            }
             
             if (!uploadResponse.ok) {
                 throw new Error(`Upload error: ${uploadResponse.status}`);
             }
             
             const result = await uploadResponse.json();
+            window.location.href = `/dashboard/bot/${result.project.id}`;
             console.log("Files uploaded successfully:", result);
             
         } catch (error) {

@@ -1,24 +1,25 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import DashboardLayout from './components/DashboardLayout'
-<<<<<<< HEAD
 import Settings from './pages/DashboardSettings'
 import Playground from './components/Playground/Playground';
 import Home from './pages/Home';
 import SettingsPage from './pages/Settings';
 import Sources from './pages/Sources';
 import CreateBot from './pages/CreateBot';
+import { RequireAuth } from './components/Auth/Requred-Auth';
+import Login from './pages/Login';
 
-function AppRoutes() {
+function App() {
   const location = useLocation();
   const currentPath = location.pathname;
-
+  
   const navLinks = [
     { label: 'Agents', href: '/dashboard/bots', isActive: currentPath === '/dashboard/bots' },
     { label: 'Usage', href: '/dashboard/usage', isActive: currentPath === '/dashboard/usage' },
     { label: 'Settings', href: '/dashboard/settings', isActive: currentPath === '/dashboard/settings' },
   ];
-  
+
   const navItemss = [
     { label: 'Playground', href: '/dashboard/bot/a', isActive: currentPath === '/dashboard/bot/a' },
     { label: 'Activity', href: '/activity', isActive: currentPath === '/activity' },
@@ -32,46 +33,30 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path='/' element={<Home/>} />
-      <Route path="/dashboard" element={<DashboardLayout navLinks={navLinks} />}>
-        <Route path='bots' element={<Dashboard />} />
-        <Route path='settings' element={<Settings />} />
-      </Route>
-      <Route path='/dashboard/bot' element={<DashboardLayout navLinks={navItemss}/>}>
-        <Route path='a' element={<Playground/>}/>
-        <Route path='a/settings' element={<SettingsPage/>}/>
-        <Route path='a/sources' element={<Sources/>}/>
-        <Route path='a/connect' element={<SettingsPage/>}/>
-      </Route>
-      <Route path='/dashboard/create' element={<CreateBot/>} />
-    </Routes>
-  );
-}
-=======
-import Settings from './pages/Settings'
-import Playground from './components/Playground';
-import Home from './pages/Home';
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
-
-function App() {
-  return (
-    <BrowserRouter>
-<<<<<<< HEAD
-      <AppRoutes />
-=======
-      <Routes>
-        <Route path='/' element={<Home/>} />
+      <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
+      
+      <Route element={<RequireAuth />}>
+        <Route path="/dashboard" element={<Navigate to="/dashboard/bots" replace />} />
+        
         <Route path="/dashboard" element={<DashboardLayout navLinks={navLinks} />}>
           <Route path='bots' element={<Dashboard />} />
           <Route path='settings' element={<Settings />} />
         </Route>
-        <Route path='/dashboard/bot' element={<DashboardLayout navLinks={navItemss}/>}>
-          <Route path='a' element={<Playground/>}/>
+        
+        <Route path='/dashboard/bot' element={<DashboardLayout navLinks={navItemss} />}>
+          <Route path='/:id' element={<Playground />} />
+          <Route path='a/settings' element={<SettingsPage />} />
+          <Route path='a/sources' element={<Sources />} />
+          <Route path='a/connect' element={<SettingsPage />} />
         </Route>
-      </Routes>
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
-    </BrowserRouter>
-  )
+        
+        <Route path='/dashboard/create' element={<CreateBot />} />
+      </Route>
+      
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }
 
 export default App

@@ -5,11 +5,7 @@ import LogoCube from "@/components/LogoCube"
 
 export default function Home() {
   return (
-<<<<<<< HEAD
     <main className="min-h-screen flex flex-col font-mono" >
-=======
-    <main className="min-h-screen flex flex-col font-mono">
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
       <nav className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
@@ -66,79 +62,24 @@ export default function Home() {
       {/* Hero Section */}
       <div className="flex-1 flex flex-col items-center justify-center relative bg-grid-pattern px-4">
         <div className="mb-8">
-<<<<<<< HEAD
           <LogoCube h={20} w={20} />
-=======
-          <LogoCube />
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center mb-6">A web browser for your AI</h1>
 
-<<<<<<< HEAD
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl text-center mb-10" style={{ fontFamily: 'Neue Montreal, sans-serif' }}>
-=======
-        <p className="text-lg md:text-xl text-gray-600 max-w-2xl text-center mb-10">
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
           Browserbase powers web browsing capabilities for AI agents and applications.
         </p>
 
         <Link
-<<<<<<< HEAD
           to={"/dashboard/bots"}
-=======
-          to={"/"}
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
           className="bg-red-500 text-white px-8 py-4 rounded-md flex items-center text-lg font-medium hover:bg-red-600 transition"
         >
           Run now
           <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
-<<<<<<< HEAD
-        <GoogleLoginButton/>
-=======
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b
-
         <p className="mt-6 text-gray-600">Hit run to launch your headless browser</p>
       </div>
     </main>
   )
 }
-<<<<<<< HEAD
-
-
-import React, { useState } from "react";
-// import { BACKEND_URL } from "../constants";
-// import { GoogleLogo } from "../constants/icons";
-// import { cn } from "@repo/ui/lib/utils";
-import { Loader } from "lucide-react";
-import { cn } from "@/lib/utils"
-
-function GoogleLoginButton() {
-  const [loader, setLoader] = useState<boolean>(false);
-
-  const googleLoginHandler = async () => {
-    setLoader(true);
-    window.location.href = `http://localhost:3000/api/auth/google`;
-  };
-
-  return (
-    <button
-      type="button"
-      className={cn(
-        "h-12 w-full px-6 md:px-20 py-3 transition-colors duration-300 flex items-center justify-center gap-4  text-center rounded-md shadow-md font-medium text-gray-700 text-sm bg-white focus:outline-none focus:ring-4 focus:ring-blue-200",
-      )}
-      onClick={googleLoginHandler}
-    >
-      {loader ? (
-        <Loader className="animate-spin" />
-      ) : (
-        <>
-          Sign in with Google
-        </>
-      )}
-    </button>
-  );
-}
-=======
->>>>>>> 8bcf80222754e0b3e6a265f0b7d5e6524d8e770b

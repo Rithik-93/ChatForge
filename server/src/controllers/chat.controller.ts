@@ -5,7 +5,6 @@ import { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import multer from "multer";
-import authMiddleware from "../middleware/middleware";
 
 const router = require("express").Router();
 
@@ -25,8 +24,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-router.use(authMiddleware);
 
 router.post(
   "/api/upload-sources",
@@ -231,6 +228,19 @@ router.post("/api/create", upload.single("files"), async (req: Request, res: Res
   } catch (error) {
     console.error("Error creating project:", error);
     res.status(500).json({ error: "Failed to create project" });
+  }
+});
+
+router.get("/api/projects", async (req: Request, res: Response) => {
+  try {
+    const projects = await prisma.project.findMany({
+      where: { userId: req.user!.id },
+      select: { id: true, name: true, userId: true },
+    });
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    res.status(500).json({ error: "Failed to fetch projects" });
   }
 });
 

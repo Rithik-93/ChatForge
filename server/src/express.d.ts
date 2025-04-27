@@ -4,8 +4,7 @@ declare global {
     interface User {
       id: string;
       email: string;
-      firstName: string;
-      lastName: string?;
+      name: string;
       password: string?;
       avatar: string?;
     }

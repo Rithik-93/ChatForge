@@ -50,18 +50,25 @@ passport.use(
 export default passport;
 
 async function googleAuthUser(
-    _req: any,
-    _accessToken: string,
-    _refreshToken: string,
-    profile: any,
-    done: any,
-  ) {
-    console.log(JSON.stringify(profile,null,2));
+  _req: any,
+  _accessToken: string,
+  _refreshToken: string,
+  profile: any,
+  done: any,
+) {
+  try {
+    console.log("Google profile:", JSON.stringify(profile, null, 2));
     
     const user = await findOrCreateUser(profile);
     if (user) return done(null, user);
+    
+    console.error("Failed to create or find user from Google profile");
     return done(null, false);
+  } catch (error) {
+    console.error("Error in Google authentication:", error);
+    return done(error);
   }
+}
 
   export const findOrCreateUser = async (profile: any) => {
     try {
@@ -73,7 +80,7 @@ async function googleAuthUser(
         create: {
           email: profile["emails"][0].value,
           name: profile["displayName"],
-          avatar: profile["picture"][0].value,
+          avatar: profile.photos && profile.photos[0] ? profile.photos[0].value : null,
         },
       });
       if (!user) {

@@ -18,7 +18,6 @@ export default function ChatPanel() {
   
     return (
       <div className="flex flex-col w-full h-full rounded-xl border shadow-md bg-white dark:bg-zinc-900">
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
           <div className="font-semibold text-sm">Rithik-resume.pdf</div>
           <button className="text-gray-500 hover:text-black">
@@ -26,9 +25,7 @@ export default function ChatPanel() {
           </button>
         </div>
   
-        {/* Main layout with messages at top and input at bottom */}
         <div className="flex flex-col justify-between h-full">
-          {/* Messages area */}
           <div className="flex-1 p-4 overflow-y-auto">
             {messages.map((msg, i) => (
               <div
@@ -48,7 +45,6 @@ export default function ChatPanel() {
             ))}
           </div>
   
-          {/* Input area - fixed at bottom */}
           <div className="mt-auto border-t p-4">
             <div className="flex items-center gap-2">
               <button className="text-gray-400 hover:text-black">
